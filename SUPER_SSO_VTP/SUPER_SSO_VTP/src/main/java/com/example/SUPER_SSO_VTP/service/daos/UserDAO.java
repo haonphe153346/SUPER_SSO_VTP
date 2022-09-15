@@ -9,15 +9,18 @@ import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class UserDAO extends BaseDAO {
-    @Autowired
+
     @Qualifier("coreFactory")
     SessionFactory sessionFactory;
+
 
     public Map<String, Object> getUserInfo(String username, String maBuuCuc) throws Exception {
         Query query = getSession(sessionFactory)
@@ -66,7 +69,7 @@ public class UserDAO extends BaseDAO {
 
     public static void main(String[] args) throws Exception {
         UserDAO userDAO = new UserDAO();
-        Map<String, Object> a = userDAO.getUserInfo("nguontest22","TN2");
+        Map<String, Object> a = userDAO.getUserInfo("nguontest22", "TN2");
         System.out.println(a);
 
     }
