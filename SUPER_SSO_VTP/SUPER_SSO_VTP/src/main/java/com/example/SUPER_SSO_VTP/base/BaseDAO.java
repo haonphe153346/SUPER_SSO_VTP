@@ -7,6 +7,7 @@ import org.hibernate.internal.SessionImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import oracle.jdbc.internal.OracleTypes;
+
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.sql.*;
@@ -18,7 +19,11 @@ import java.util.*;
 @Transactional
 public class BaseDAO {
     protected Session getSession(SessionFactory sf) {
-        return sf.getCurrentSession();
+        if (sf.getCurrentSession() == null) {
+            return sf.openSession();
+        } else {
+            return sf.getCurrentSession();
+        }
     }
 
     protected Connection getConnection(SessionFactory sf) {

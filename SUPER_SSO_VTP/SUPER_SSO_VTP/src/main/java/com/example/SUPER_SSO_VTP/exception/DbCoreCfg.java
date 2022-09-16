@@ -20,6 +20,8 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+import static org.hibernate.cfg.AvailableSettings.DIALECT;
+
 @Configuration
 @EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class, MongoAutoConfiguration.class,
         DataSourceTransactionManagerAutoConfiguration.class, JpaRepositoriesAutoConfiguration.class})
@@ -29,11 +31,16 @@ public class DbCoreCfg {
     @Autowired
     Environment env;
 
+
     @Bean(name = "coreSource")
+
     public DataSource getDataSource() throws Exception {
-        String host = env.getProperty("sys.dbUrl");
-        String username = env.getProperty("sys.dbUsername");
-        String password = env.getProperty("sys.dbPassword");
+//        String host = env.getProperty("sys.dbUrl");
+//        String username = env.getProperty("sys.dbUsername");
+//        String password = env.getProperty("sys.dbPassword");
+        String host = "jdbc:oracle:thin:@//10.60.117.73:1521/EVTP";
+        String username = "vtp";
+        String password = "Cntt#2018#";
         System.out.println("## getDataSource " + host + "/" + username + "/**" + (password == null ? "" : password.substring(password.length() - 3)));
         ComboPooledDataSource dataSource = new ComboPooledDataSource();
         dataSource.setDriverClass("oracle.jdbc.driver.OracleDriver");
@@ -65,6 +72,7 @@ public class DbCoreCfg {
         properties.put("hibernate.show_sql", "false");
         properties.put("current_session_context_class", "org.springframework.orm.hibernate5.SpringSessionContext");
         properties.put("hibernate.temp.use_jdbc_metadata_defaults", false);
+
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
         factoryBean.setHibernateProperties(properties);
         factoryBean.setDataSource(dataSource);

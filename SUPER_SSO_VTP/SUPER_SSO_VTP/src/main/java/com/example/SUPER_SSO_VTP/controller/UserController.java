@@ -1,6 +1,7 @@
 package com.example.SUPER_SSO_VTP.controller;
 
 import com.example.SUPER_SSO_VTP.service.UserService;
+import com.example.SUPER_SSO_VTP.service.impl.UserImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,7 +15,7 @@ import java.util.Map;
 @RestController
 public class UserController {
     @Autowired
-    UserService userService;
+    UserImpl userService;
 
     @GetMapping("/abc")
     public Map<String, Object> log() throws Exception {
