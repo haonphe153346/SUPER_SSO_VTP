@@ -1,8 +1,10 @@
 package com.example.SUPER_SSO_VTP.service.daos;
 
 import com.example.SUPER_SSO_VTP.base.BaseDAO;
+import com.example.SUPER_SSO_VTP.exception.VtException;
 import com.example.SUPER_SSO_VTP.util.Constants;
 import com.example.SUPER_SSO_VTP.util.Utils;
+import oracle.jdbc.internal.OracleTypes;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.hibernate.type.LongType;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,12 +62,20 @@ public class UserDAO extends BaseDAO {
             result.put("ma_buucuc", args[8]);
             result.put("email", args[9]);
             result.put("name", args[10]);
-            result.put(Constants.pwdKey, args[11]);
-            result.put(Constants.pwdSaltKey, args[12]);
+            result.put("PASSWORDFORMAT", args[11]);
+            result.put("PASSWORDSALT", args[12]);
             result.put("don_vi", args[13]);
             result.put("manhanvien", args[14]);
         }
         return result;
+    }
+
+    public void sendOtpViaSms(String phone) throws Exception {
+        Object[] objs = getListResult(sessionFactory, "VTP.EVTP_OTP.SEND_OTP_VTMAN", Arrays.asList(phone), new int[]{OracleTypes.VARCHAR});
+        String msg = (String) objs[0];
+        if (msg != null && !msg.isEmpty()) {
+            throw new VtException(200, msg);
+        }
     }
 
     public static void main(String[] args) throws Exception {

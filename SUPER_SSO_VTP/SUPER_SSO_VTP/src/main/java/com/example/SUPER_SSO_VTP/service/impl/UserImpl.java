@@ -22,6 +22,7 @@ public class UserImpl implements UserService {
 
     }
 
+
     @Override
     public Long getUserTruongBC(String maBC) throws Exception {
         return null;
