@@ -19,11 +19,9 @@ import java.util.*;
 @Transactional
 public class BaseDAO {
     protected Session getSession(SessionFactory sf) {
-        if (sf.getCurrentSession() == null) {
-            return sf.openSession();
-        } else {
+
             return sf.getCurrentSession();
-        }
+
     }
 
     protected Connection getConnection(SessionFactory sf) {

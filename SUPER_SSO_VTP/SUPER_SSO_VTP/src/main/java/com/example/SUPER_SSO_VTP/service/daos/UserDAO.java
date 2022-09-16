@@ -17,7 +17,7 @@ import java.util.Map;
 
 @Component
 public class UserDAO extends BaseDAO {
-
+    @Autowired
     @Qualifier("coreFactory")
     SessionFactory sessionFactory;
 
@@ -42,8 +42,8 @@ public class UserDAO extends BaseDAO {
                 .addScalar("PASSWORDSALT", new StringType())
                 .addScalar("CHI_NHANH", new StringType())
                 .addScalar("EMPLOYEECODE", new StringType())
-                .setParameter(1, username)
-                .setParameter(2, maBuuCuc);
+                .setParameter(0, username)
+                .setParameter(1, maBuuCuc);
         List<Object[]> ls = query.list();
         Map<String, Object> result = new HashMap<>();
         if (!Utils.isNullOrEmpty(ls)) {

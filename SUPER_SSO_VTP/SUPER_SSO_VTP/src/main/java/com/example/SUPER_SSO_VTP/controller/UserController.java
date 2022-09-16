@@ -15,7 +15,7 @@ import java.util.Map;
 @RestController
 public class UserController {
     @Autowired
-    UserImpl userService;
+    UserService userService;
 
     @GetMapping("/abc")
     public Map<String, Object> log() throws Exception {
