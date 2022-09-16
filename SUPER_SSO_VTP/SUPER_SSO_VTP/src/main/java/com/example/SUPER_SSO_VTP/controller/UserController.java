@@ -44,27 +44,6 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/abc")
-    public Map<String, Object> log() throws Exception {
-        return userService.getUserInfo("nguontest22", "TN2");
-    }
-
-    @GetMapping("/login")
-    public String cmdlogin() {
-        //1. Get app_id = ? and redirect_uri = ?
-
-        //2. Check account exist in database
-
-        //3. If(account) exist => generate share code = { app_id = ? ; access_token = ? ; UserObj = ? }
-
-        //4. Get share code from app_id and xac minh share code
-
-        //5. Generate Token + ListRole + ListRoleDetails
-
-        //6. Return Token
-        return "testxx";
-    }
-
     @PostMapping("/v2login")
     public ResponseEntity login(@RequestBody LoginRequest request) throws Exception {
 
