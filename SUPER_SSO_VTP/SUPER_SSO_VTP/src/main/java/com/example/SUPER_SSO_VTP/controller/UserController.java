@@ -3,6 +3,7 @@ package com.example.SUPER_SSO_VTP.controller;
 import com.example.SUPER_SSO_VTP.base.BaseResponse;
 import com.example.SUPER_SSO_VTP.exception.VtException;
 import com.example.SUPER_SSO_VTP.model.request.LoginRequest;
+import com.example.SUPER_SSO_VTP.model.response.LoginOTP;
 import com.example.SUPER_SSO_VTP.service.UserService;
 import com.example.SUPER_SSO_VTP.service.impl.UserImpl;
 import com.example.SUPER_SSO_VTP.util.Constants;
@@ -22,6 +23,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -105,6 +108,42 @@ public class UserController {
         return retStr;
     }
 
+    @GetMapping("/send-otp")
+    public ResponseEntity sendOtp(@RequestBody String phone, HttpServletRequest request) throws Exception {
+        //1. Get Login OTP form
+        LoginOTP subLoginOTP = getLoginOTPSession(request);
+        if(subLoginOTP!=null){
+            if(subLoginOTP.getCount_otp()>=3 || subLoginOTP.getCount_otp()<0){
+                throw new VtException(Constants.STATUS.E204, "Quá lần gửi OTP !");
+            }
+            //2. Count OTP
+            subLoginOTP.setCount_otp(subLoginOTP.getCount_otp()+1);
+            //3. Set LoginOTP to Session
+            setLoginOTPSession(subLoginOTP,request);
+            //4. Return
+            return new ResponseEntity(new BaseResponse(true, "Gửi Mã xác nhận thành công", "msg"), HttpStatus.OK);
+        }
+        userService.sendOtpViaSms(Utils.phoneHr(phone));
+        return new ResponseEntity(new BaseResponse(false, "Gửi Mã xác nhận thành công", "msg"), HttpStatus.OK);
+    }
+
+    private static final String LOGIN_OTP_SESSION_KEY = "LoginOTP";
+
+    public LoginOTP getLoginOTPSession(HttpServletRequest request){
+        if(request.getSession().getAttribute(LOGIN_OTP_SESSION_KEY)!=null){
+            return  (LoginOTP) request.getSession().getAttribute(LOGIN_OTP_SESSION_KEY);
+        }else{
+            LoginOTP newLoginOTP = new LoginOTP();
+            newLoginOTP.setCount_otp(0);
+            return newLoginOTP;
+        }
+    }
+
+    public void setLoginOTPSession(LoginOTP loginOTP, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.setAttribute(LOGIN_OTP_SESSION_KEY, loginOTP);
+    }
+
     @GetMapping("/send-sms-otp")
     public ResponseEntity sendSmsOtp(@RequestBody String phone) throws Exception {
             int count = 0;
@@ -112,6 +151,7 @@ public class UserController {
             userService.sendOtpViaSms(Utils.phoneHr(phone));
             return new ResponseEntity(new BaseResponse(false, "Gửi Mã xác nhận thành công", "msg"), HttpStatus.OK);
     }
+
     @GetMapping("/otp")
     public ResponseEntity generateCode(){
         String Capital_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
