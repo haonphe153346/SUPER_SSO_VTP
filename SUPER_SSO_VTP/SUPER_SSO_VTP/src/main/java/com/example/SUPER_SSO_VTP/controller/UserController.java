@@ -4,6 +4,7 @@ import com.example.SUPER_SSO_VTP.base.BaseResponse;
 import com.example.SUPER_SSO_VTP.exception.VtException;
 import com.example.SUPER_SSO_VTP.model.request.LoginRequest;
 import com.example.SUPER_SSO_VTP.model.response.LoginOTP;
+import com.example.SUPER_SSO_VTP.model.response.UserData;
 import com.example.SUPER_SSO_VTP.service.UserService;
 import com.example.SUPER_SSO_VTP.service.impl.UserImpl;
 import com.example.SUPER_SSO_VTP.util.Constants;
@@ -32,6 +33,7 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -43,6 +45,21 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @GetMapping("/testapi")
+    public  Map<String, Object> testapi() throws Exception {
+        return userService.getUserData("nguontest22","TN2");
+    }
+
+    @GetMapping("/tes")
+    public  Map<String, Map<String, Object>>  test() throws Exception {
+        return userService.TestData();
+    }
+
+    @GetMapping("/tet")
+    public Object[] tet() throws Exception {
+        return userService.test(1,5);
+    }
 
     @PostMapping("/v2login")
     public ResponseEntity login(@RequestBody LoginRequest request) throws Exception {
@@ -130,6 +147,8 @@ public class UserController {
             userService.sendOtpViaSms(Utils.phoneHr(phone));
             return new ResponseEntity(new BaseResponse(false, "Gửi Mã xác nhận thành công", "msg"), HttpStatus.OK);
     }
+
+
 
     @GetMapping("/otp")
     public ResponseEntity generateCode(){
