@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SUPER_SSO_VTP/SUPER_SSO_VTP/SUPER_SSO_VTP.iml" filepath="$PROJECT_DIR$/SUPER_SSO_VTP/SUPER_SSO_VTP/SUPER_SSO_VTP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SSO_APP_VTP/SSO_APP_VTP/SSO_APP_VTP.iml" filepath="$PROJECT_DIR$/SSO_APP_VTP/SSO_APP_VTP/SSO_APP_VTP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/SSO_VTP.iml" filepath="$PROJECT_DIR$/.idea/SSO_VTP.iml" />
     </modules>
   </component>
 </project>
